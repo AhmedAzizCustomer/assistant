@@ -12,11 +12,11 @@ class Settings(BaseSettings):
     environment: str = "development"
     api_host: str = "0.0.0.0"
     api_port: int = 8000
-    secret_key: str
+    secret_key: str = "change-this-in-production-make-it-random"
 
-    # AI API Keys
-    anthropic_api_key: str
-    openai_api_key: str
+    # AI API Keys (optional - can be set via web interface)
+    anthropic_api_key: Optional[str] = None
+    openai_api_key: Optional[str] = None
     default_ai_provider: str = "anthropic"
     claude_model: str = "claude-3-5-sonnet-20241022"
     openai_model: str = "gpt-4-turbo-preview"
@@ -33,8 +33,8 @@ class Settings(BaseSettings):
     google_calendar_client_id: Optional[str] = None
     google_calendar_client_secret: Optional[str] = None
 
-    # Database
-    database_url: str
+    # Database (SQLite by default for easy deployment)
+    database_url: str = "sqlite:///./assistant.db"
 
     # CORS
     frontend_url: str = "http://localhost:3000"

@@ -11,6 +11,7 @@ import Meals from './pages/Meals';
 import Workouts from './pages/Workouts';
 import Chat from './pages/Chat';
 import Schedule from './pages/Schedule';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <li><Link to="/workouts">Workouts</Link></li>
             <li><Link to="/schedule">Schedule</Link></li>
             <li><Link to="/chat">Chat</Link></li>
+            <li><Link to="/settings">⚙️ Settings</Link></li>
           </ul>
         </nav>
 
@@ -42,6 +44,7 @@ function App() {
             <Route path="/workouts" element={<Workouts />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>
       </div>

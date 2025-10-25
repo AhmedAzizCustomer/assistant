@@ -2,6 +2,17 @@
 
 A comprehensive AI-powered personal assistant that helps manage all aspects of your work and life.
 
+## 🚀 Quick Start
+
+**Deploy in 2 minutes:**
+
+1. Click to deploy on [Railway](https://railway.app) or [Render](https://render.com)
+2. Once deployed, visit your app URL
+3. Click "⚙️ Settings" and enter your API keys through the web interface
+4. Start using your AI assistant!
+
+**No manual configuration needed!** Everything is configured through the web interface.
+
 ## Features
 
 ### Email Management
@@ -83,52 +94,70 @@ ai-personal-assistant/
 - **Database**: PostgreSQL (cloud-ready)
 - **APIs**: Gmail API, Microsoft Graph API, Google Calendar API
 
-## Setup
+## Deployment
 
-See [docs/setup.md](docs/setup.md) for detailed setup instructions.
+### Option 1: One-Click Deploy (Recommended)
 
-## Environment Variables
+Deploy to cloud platforms with one click:
 
-Required environment variables (create `.env` file):
+- **Railway**: Push to GitHub → Connect to Railway → Auto-deploy
+- **Render**: Push to GitHub → Connect to Render → Auto-deploy
+- **Heroku**: `heroku create && git push heroku main`
 
-```
-# AI APIs
-ANTHROPIC_API_KEY=your_anthropic_key
-OPENAI_API_KEY=your_openai_key
+See [docs/deployment.md](docs/deployment.md) for detailed deployment instructions.
 
-# Email Integration
-GMAIL_CLIENT_ID=your_gmail_client_id
-GMAIL_CLIENT_SECRET=your_gmail_client_secret
-OUTLOOK_CLIENT_ID=your_outlook_client_id
-OUTLOOK_CLIENT_SECRET=your_outlook_client_secret
+### Option 2: Docker
 
-# Calendar Integration
-GOOGLE_CALENDAR_CLIENT_ID=your_google_calendar_client_id
-GOOGLE_CALENDAR_CLIENT_SECRET=your_google_calendar_client_secret
-
-# Database
-DATABASE_URL=postgresql://user:password@host:port/dbname
-
-# App Config
-SECRET_KEY=your_secret_key
-ENVIRONMENT=development
+```bash
+docker-compose up -d
 ```
 
-## Development
+Access at http://localhost:8000
 
-### Backend
+### Option 3: Local Development
+
+#### Backend
 ```bash
 cd backend
+python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 uvicorn src.main:app --reload
 ```
 
-### Frontend
+#### Frontend
 ```bash
 cd frontend
 npm install
 npm start
 ```
+
+## Configuration
+
+**All configuration is done through the web interface!**
+
+1. Visit your deployed app URL
+2. Click "⚙️ Settings" in the navigation
+3. Enter your API keys and credentials:
+   - **Required**: Anthropic API key OR OpenAI API key
+   - **Optional**: Email and calendar credentials for integrations
+4. Click "Save Configuration"
+5. Test your AI connection
+6. Start using your assistant!
+
+### Getting API Keys
+
+- **Anthropic**: [console.anthropic.com](https://console.anthropic.com/) (Recommended)
+- **OpenAI**: [platform.openai.com](https://platform.openai.com/)
+
+See [docs/deployment.md](docs/deployment.md) for detailed API key setup instructions.
+
+## Documentation
+
+- **[Setup Guide](docs/setup.md)** - Detailed setup instructions
+- **[Deployment Guide](docs/deployment.md)** - How to deploy to various platforms
+- **[API Documentation](docs/api.md)** - Complete API reference
+- **[Features Guide](docs/features.md)** - How to use all features
 
 ## License
 

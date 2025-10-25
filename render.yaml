@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: ai-personal-assistant
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: |
+      cd frontend && npm install && npm run build && cd .. &&
+      pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.src.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///./assistant.db
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: NODE_VERSION
+        value: 18.0.0
+    disk:
+      name: assistant-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1

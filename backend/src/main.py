@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .core.config import get_settings
-from .api import tasks, meals, workouts, events, email, calendar, chat, schedule
+from .api import tasks, meals, workouts, events, email, calendar, chat, schedule, settings
 
 settings = get_settings()
 
@@ -23,6 +23,7 @@ app.add_middleware(
 )
 
 # Include routers
+app.include_router(settings.router, prefix="/api/settings", tags=["Settings"])
 app.include_router(tasks.router, prefix="/api/tasks", tags=["Tasks"])
 app.include_router(meals.router, prefix="/api/meals", tags=["Meals"])
 app.include_router(workouts.router, prefix="/api/workouts", tags=["Workouts"])
@@ -31,6 +32,14 @@ app.include_router(email.router, prefix="/api/email", tags=["Email"])
 app.include_router(calendar.router, prefix="/api/calendar", tags=["Calendar"])
 app.include_router(chat.router, prefix="/api/chat", tags=["Chat"])
 app.include_router(schedule.router, prefix="/api/schedule", tags=["Schedule"])
+
+
+# Initialize database tables on startup
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database tables."""
+    from .storage.database import Base, engine
+    Base.metadata.create_all(bind=engine)
 
 
 @app.get("/")
