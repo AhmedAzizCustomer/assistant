@@ -28,8 +28,15 @@ RUN apt-get update && apt-get install -y \
 COPY backend/requirements.txt ./backend/requirements.txt
 RUN pip install --no-cache-dir -r backend/requirements.txt
 
-# Copy ALL project files
-COPY . .
+# Copy backend code
+COPY backend/ ./backend/
+
+# Copy startup files
+COPY run.py ./run.py
+COPY Procfile ./Procfile
+
+# Copy BUILT frontend from stage 1 (not source)
+COPY --from=frontend-build /app/frontend/build ./frontend/build
 
 # Set working directory and Python path
 ENV PYTHONUNBUFFERED=1
