@@ -13,7 +13,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies (including build tools for cryptography)
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
@@ -28,25 +28,19 @@ RUN apt-get update && apt-get install -y \
 COPY backend/requirements.txt ./backend/requirements.txt
 RUN pip install --no-cache-dir -r backend/requirements.txt
 
-# Copy backend code
-COPY backend/ ./backend/
+# Copy ALL project files
+COPY . .
 
-# Copy built frontend
-COPY --from=frontend-build /app/frontend/build ./frontend/build
-
-# Copy startup script
-COPY run.py ./run.py
-
-# Create data directory for SQLite
-RUN mkdir -p /app/data
-
-# Set environment variables
+# Set working directory and Python path
 ENV PYTHONUNBUFFERED=1
-ENV DATABASE_URL=sqlite:////app/data/assistant.db
 ENV PYTHONPATH=/app
+ENV DATABASE_URL=sqlite:////app/data/assistant.db
+
+# Create data directory
+RUN mkdir -p /app/data
 
 # Expose port
 EXPOSE 8000
 
-# Run the application
-CMD ["python", "run.py"]
+# Use Python directly to run uvicorn with run.py
+CMD ["python", "-u", "run.py"]
