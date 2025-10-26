@@ -35,8 +35,7 @@ COPY backend/ ./backend/
 COPY --from=frontend-build /app/frontend/build ./frontend/build
 
 # Copy startup script
-COPY start.sh ./start.sh
-RUN chmod +x ./start.sh
+COPY run.py ./run.py
 
 # Create data directory for SQLite
 RUN mkdir -p /app/data
@@ -44,9 +43,10 @@ RUN mkdir -p /app/data
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 ENV DATABASE_URL=sqlite:////app/data/assistant.db
+ENV PYTHONPATH=/app
 
 # Expose port
 EXPOSE 8000
 
-# Run the startup script
-CMD ["./start.sh"]
+# Run the application
+CMD ["python", "run.py"]
