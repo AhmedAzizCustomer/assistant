@@ -34,6 +34,10 @@ COPY backend/ ./backend/
 # Copy built frontend
 COPY --from=frontend-build /app/frontend/build ./frontend/build
 
+# Copy startup script
+COPY start.sh ./start.sh
+RUN chmod +x ./start.sh
+
 # Create data directory for SQLite
 RUN mkdir -p /app/data
 
@@ -41,8 +45,8 @@ RUN mkdir -p /app/data
 ENV PYTHONUNBUFFERED=1
 ENV DATABASE_URL=sqlite:////app/data/assistant.db
 
-# Expose port (Railway will override with PORT env var)
+# Expose port
 EXPOSE 8000
 
-# Run the application - use PORT env var if available
-CMD uvicorn backend.src.main:app --host 0.0.0.0 --port ${PORT:-8000}
+# Run the startup script
+CMD ["./start.sh"]
