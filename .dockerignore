@@ -1,0 +1,56 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist
+build
+venv
+env
+.venv
+
+# Node
+node_modules
+npm-debug.log
+.npm
+
+# IDEs
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docs
+docs/
+*.md
+!README.md
+
+# Tests
+tests/
+*.test.js
+*.spec.js
+
+# Data
+data/
+*.db
+*.sqlite
+
+# Environment
+.env
+.env.local
+
+# Logs
+logs
+*.log
