@@ -11,11 +11,31 @@ class AIEngine:
     def __init__(self):
         """Initialize AI engine with both providers."""
         settings = get_settings()
-        self.anthropic_client = Anthropic(api_key=settings.anthropic_api_key)
-        self.openai_client = OpenAI(api_key=settings.openai_api_key)
+
+        # Store settings but don't create clients yet (lazy initialization)
+        self.anthropic_api_key = settings.anthropic_api_key
+        self.openai_api_key = settings.openai_api_key
         self.default_provider = settings.default_ai_provider
         self.claude_model = settings.claude_model
         self.openai_model = settings.openai_model
+
+        # Clients are created lazily when needed
+        self._anthropic_client = None
+        self._openai_client = None
+
+    @property
+    def anthropic_client(self):
+        """Get or create Anthropic client."""
+        if self._anthropic_client is None and self.anthropic_api_key:
+            self._anthropic_client = Anthropic(api_key=self.anthropic_api_key)
+        return self._anthropic_client
+
+    @property
+    def openai_client(self):
+        """Get or create OpenAI client."""
+        if self._openai_client is None and self.openai_api_key:
+            self._openai_client = OpenAI(api_key=self.openai_api_key)
+        return self._openai_client
 
     async def generate_response(
         self,
@@ -40,6 +60,12 @@ class AIEngine:
         """
         provider = provider or self.default_provider
 
+        # Check if API keys are configured
+        if provider == "anthropic" and not self.anthropic_api_key:
+            raise ValueError("Anthropic API key not configured. Please configure it in Settings.")
+        if provider == "openai" and not self.openai_api_key:
+            raise ValueError("OpenAI API key not configured. Please configure it in Settings.")
+
         # Combine context and prompt
         full_prompt = f"{context}\n\n{prompt}" if context else prompt
 
@@ -54,6 +80,9 @@ class AIEngine:
         self, prompt: str, system_prompt: Optional[str], max_tokens: int
     ) -> str:
         """Generate response using Claude."""
+        if not self.anthropic_client:
+            raise ValueError("Anthropic API key not configured")
+
         messages = [{"role": "user", "content": prompt}]
 
         kwargs = {
@@ -72,6 +101,9 @@ class AIEngine:
         self, prompt: str, system_prompt: Optional[str], max_tokens: int
     ) -> str:
         """Generate response using OpenAI."""
+        if not self.openai_client:
+            raise ValueError("OpenAI API key not configured")
+
         messages = []
 
         if system_prompt:
